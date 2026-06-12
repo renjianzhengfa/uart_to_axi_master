@@ -20,7 +20,9 @@ module uart_to_cheshire #(
     parameter [AXI_ADDR_WIDTH-1:0]  SPM_C_MIN_ADDR       = 63'h1000_0000,
     parameter [AXI_ADDR_WIDTH-1:0]  SPM_C_MAX_ADDR       = 63'h13FF_FFFF,
     parameter [AXI_ADDR_WIDTH-1:0]  SPM_U_MIN_ADDR       = 63'h1400_0000,
-    parameter [AXI_ADDR_WIDTH-1:0]  SPM_U_MAX_ADDR       = 63'h17FF_FFFF
+    parameter [AXI_ADDR_WIDTH-1:0]  SPM_U_MAX_ADDR       = 63'h17FF_FFFF,
+    parameter [AXI_ADDR_WIDTH-1:0] DDR_MIN_ADDR             = 48'h8000_0000,
+    parameter [AXI_ADDR_WIDTH-1:0] DDR_MAX_ADDR             = 48'hFFFF_FFFF
 ) (
     i_clk,
     i_rst_n,
@@ -187,7 +189,9 @@ module uart_to_cheshire #(
         .SPM_C_MIN_ADDR      (SPM_C_MIN_ADDR),
         .SPM_C_MAX_ADDR      (SPM_C_MAX_ADDR),
         .SPM_U_MIN_ADDR      (SPM_U_MIN_ADDR),
-        .SPM_U_MAX_ADDR      (SPM_U_MAX_ADDR)
+        .SPM_U_MAX_ADDR      (SPM_U_MAX_ADDR),
+        .DDR_MIN_ADDR       (DDR_MIN_ADDR),
+        .DDR_MAX_ADDR       (DDR_MAX_ADDR)
     ) u_uart_axi_bridge (
         .i_clk           (i_clk),
         .i_rst_n         (i_rst_n),
