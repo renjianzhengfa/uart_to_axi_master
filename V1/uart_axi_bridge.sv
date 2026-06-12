@@ -22,7 +22,10 @@ module uart_axi_bridge #(
     parameter [AXI_ADDR_WIDTH-1:0] SPM_C_MIN_ADDR        = 47'h1000_0000,
     parameter [AXI_ADDR_WIDTH-1:0] SPM_C_MAX_ADDR        = 47'h13FF_FFFF,
     parameter [AXI_ADDR_WIDTH-1:0] SPM_U_MIN_ADDR        = 47'h1400_0000,
-    parameter [AXI_ADDR_WIDTH-1:0] SPM_U_MAX_ADDR        = 47'h17FF_FFFF
+    parameter [AXI_ADDR_WIDTH-1:0] SPM_U_MAX_ADDR        = 47'h17FF_FFFF,
+
+    parameter [AXI_ADDR_WIDTH-1:0] DDR_MIN_ADDR = 48'h8000_0000,
+    parameter [AXI_ADDR_WIDTH-1:0] DDR_MAX_ADDR = 48'hFFFF_FFFF
 ) (
     input  wire                      i_clk,
     input  wire                      i_rst_n,
@@ -163,7 +166,9 @@ bridge_ctrl_chs #(
             .SPM_C_MIN_ADDR(SPM_C_MIN_ADDR),
             .SPM_C_MAX_ADDR(SPM_C_MAX_ADDR),
             .SPM_U_MIN_ADDR(SPM_U_MIN_ADDR),
-            .SPM_U_MAX_ADDR(SPM_U_MAX_ADDR)
+            .SPM_U_MAX_ADDR(SPM_U_MAX_ADDR),
+            .DDR_MIN_ADDR(DDR_MIN_ADDR),
+            .DDR_MAX_ADDR(DDR_MAX_ADDR)
         ) inst_bridge_ctrl_chs (
             .i_clk               (i_clk),
             .i_rst               (w_rst),
