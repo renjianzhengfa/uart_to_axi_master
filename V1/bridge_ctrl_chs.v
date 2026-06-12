@@ -18,7 +18,10 @@ module bridge_ctrl_chs #(
     parameter [AXI_ADDR_WIDTH-1:0] EXEC_ENTRY_LO_ADDR = 48'h0300_0000,
     parameter [AXI_ADDR_WIDTH-1:0] EXEC_ENTRY_HI_ADDR = 48'h0300_0004,
     parameter [AXI_ADDR_WIDTH-1:0] EXEC_GO_ADDR       = 48'h0300_0008,
-    parameter [31:0]               EXEC_GO_DATA       = 32'h0000_0002
+    parameter [31:0]               EXEC_GO_DATA       = 32'h0000_0002,
+
+    parameter [AXI_ADDR_WIDTH-1:0] DDR_MIN_ADDR = 48'h8000_0000,
+    parameter [AXI_ADDR_WIDTH-1:0] DDR_MAX_ADDR = 48'hFFFF_FFFF
 ) (
     input  wire                           i_clk,
     input  wire                           i_rst,
@@ -158,6 +161,7 @@ wire        w_cmd_pe;
 
 wire        w_addr_in_reg;
 wire        w_addr_in_spm;
+
 wire [15:0] w_next_burst_bytes;
 wire [8:0]  w_next_burst_beats;
 wire        w_last_burst;
@@ -170,6 +174,12 @@ wire w_addr_in_npu;
 assign w_addr_in_npu =
     (r_req_addr_latched >= NPU_MIN_ADDR) &&
     (r_req_addr_latched <= NPU_MAX_ADDR);
+
+wire        w_addr_in_ddr;
+assign w_addr_in_ddr =
+    (r_req_addr_latched >= DDR_MIN_ADDR) &&
+    (r_req_addr_latched <= DDR_MAX_ADDR);
+
 
 assign o_busy = (r_state != ST_IDLE);
 
@@ -204,7 +214,8 @@ assign w_addr_in_reg =
 
 assign w_addr_in_spm =
     ((r_req_addr_latched >= SPM_C_MIN_ADDR) && (r_req_addr_latched <= SPM_C_MAX_ADDR)) ||
-    ((r_req_addr_latched >= SPM_U_MIN_ADDR) && (r_req_addr_latched <= SPM_U_MAX_ADDR));
+    ((r_req_addr_latched >= SPM_U_MIN_ADDR) && (r_req_addr_latched <= SPM_U_MAX_ADDR)) ||
+    w_addr_in_ddr;
 
 assign w_last_burst = (r_bytes_left == r_burst_bytes);
 assign w_cur_beat_base_byte = r_data_ptr + (r_wr_beat_idx * AXI_DATA_BYTES);
